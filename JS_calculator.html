@@ -1,0 +1,213 @@
+<!DOCTYPE html> 
+<html lang="ja"> 
+  <head> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+    <title>javascript電卓</title>
+  
+    <style>
+      body {
+        background: #000000;
+      }
+      
+      .text1 {
+      text-align: center;
+      font-size:30px;
+      color: #daa520;
+      }
+      
+      .text2 {
+      text-align: left;
+      font-size:20px;
+      color: red;
+      }
+
+      .dentaku {
+      background: #ffd700;
+      width: 200px;
+      padding: 10px;
+      text-align: center;
+      border: 3px solid red;
+      margin: 30px auto;
+      }
+
+      .rireki {
+      background: #ffd700;
+      width: 200px;
+      padding: 10px;
+      text-align: center;
+      border: 3px solid red;
+      margin: 30px auto;
+      }
+      
+      </style>
+
+    <script type="text/javascript"> 
+      var kekka = "";
+      var rireki = "";
+      var tmp = "";
+
+      function clearText(){
+      form.text.value = "";
+      kekka = "";
+      }
+
+      function clearrireki(){
+      form.rirekiarea.value = "";
+      }
+      
+      function btnPressed(x){ 
+      if( kekka!="" ){ 
+      form.text.value = kekka; 
+      kekka = ""; 
+      } 
+      form.text.value += x; 
+      }
+
+      function backSpace(){ 
+      kekka = ""; 
+      form.text.value = form.text.value.substring(0, form.text.value.length - 1); 
+      }
+      
+      function calculate(){ 
+      if( kekka!="" ) return;
+      kekka = eval(form.text.value); 
+      if( kekka >= Infinity ) kekka = "Error";
+      form.text.value += "=" + kekka;
+      rireki = form.text.value;
+      form.rirekiarea.value += rireki + "\n"; 
+      }
+      
+      function sqrt(){ 
+      if( kekka!="" ){ 
+      tmp = kekka;
+      kekka = Math.sqrt(kekka);
+      if( isNaN(kekka) ) kekka = "Error";
+      form.rirekiarea.value += "√" + tmp + "=" + kekka + "\n";
+      }else{
+      kekka = Math.sqrt(eval(form.text.value));
+      if( isNaN(kekka) ) kekka = "Error";
+      form.rirekiarea.value += "√(" + form.text.value + ")=" + kekka + "\n";
+      } 
+      form.text.value = kekka;
+      }
+
+      function fraction(){
+      if( kekka!="" ){
+      tmp = kekka;
+      kekka = 1/kekka;
+      if( kekka >= Infinity ) kekka = "Error";
+      form.rirekiarea.value += "1/" + tmp + "=" + kekka + "\n";
+      }else{
+      kekka = 1/(eval(form.text.value));
+      if( kekka >= Infinity ) kekka = "Error";
+      form.rirekiarea.value += "1/(" + form.text.value + ")=" + kekka + "\n";
+      }
+      form.text.value = kekka;
+      }
+
+      function squared(){
+      if( kekka!="" ){
+      tmp = kekka;
+      kekka = kekka*kekka;
+      form.rirekiarea.value += tmp + "^2" +"=" + kekka + "\n";
+      }else{
+      kekka = (eval(form.text.value))*(eval(form.text.value));
+      form.rirekiarea.value += "(" + form.text.value + ")^2" + "=" + kekka + "\n";
+      }
+      form.text.value = kekka;
+      }
+
+      function keypress(event){ 
+      if(event.keyCode != 0){ 
+      moji = event.keyCode;   //IE 
+      }else{ 
+      moji = event.charCode;  //Firefox 
+      } 
+      if( moji==13 || moji==61 ){   //13:リターンキー  61:イコール(=)
+      kekka = eval(form.text.value); 
+      form.text.value += "=" + kekka; 
+      rireki = form.text.value;
+      form.rirekiarea.value += rireki + "\n";
+      return false;  //入力文字を追加しないときは false を返す 
+      }
+      return true; 
+      }
+      
+    </script> 
+  </head> 
+  <body> 
+    <form name="form">
+      <p class="text1">javascript電卓</p>
+      <div class="dentaku">
+	<table>
+	  <tr><td>
+	      <input type="text" name="text" onKeyPress="return keypress(event)" style="border: 2px solid #000000">
+	  </tr><td>
+	    <tr><td>
+		<input type="button" value="x^2" onClick="squared()" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000; text-align: center;">
+		<input type="button" value="1/x" onClick="fraction()" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000; text-align: center;">
+		<input type="button" value="%" onClick="btnPressed('%')" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000">
+		<input type="button" value="C" onClick="clearText()" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000">
+	  </tr><td>
+	    <tr><td>
+		<input type="button" value="(" onClick="btnPressed('(')" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000">
+		<input type="button" value=")" onClick="btnPressed(')')" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000">
+		<input type="button" value="√" onClick="sqrt()" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000">
+		<input type="button" value="BS" onClick="backSpace()" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000">
+	  </tr><td>
+	    <tr><td>
+		<input type="button" value="7" onClick="btnPressed('7')" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000">
+		<input type="button" value="8" onClick="btnPressed('8')" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000">
+		<input type="button" value="9" onClick="btnPressed('9')" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000">
+		<input type="button" value="/" onClick="btnPressed('/')" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000">
+	  </tr><td>
+	    <tr><td>
+		<input type="button" value="4" onClick="btnPressed('4')" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000">
+		<input type="button" value="5" onClick="btnPressed('5')" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000">
+		<input type="button" value="6" onClick="btnPressed('6')" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000">
+		<input type="button" value="*" onClick="btnPressed('*')" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000">
+	  </tr><td>
+	    <tr><td>
+		<input type="button" value="1" onClick="btnPressed('1')" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000">
+		<input type="button" value="2" onClick="btnPressed('2')" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000">
+		<input type="button" value="3" onClick="btnPressed('3')" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000">
+		<input type="button" value="-" onClick="btnPressed('-')" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000">
+	  </tr><td>
+	    <tr><td>
+		<input type="button" value="0" onClick="btnPressed('0')" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000">
+		<input type="button" value="." onClick="btnPressed('.')" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000">     
+		<input type="button" value="=" onClick="calculate()" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000; color: white; background: #1e90ff;">
+		<input type="button" value="+" onClick="btnPressed('+')" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000">
+	  </tr><td>	
+	</table>
+      </div>
+      <div class="rireki">
+	<table>
+	  <tr><td>
+              <textarea name="rirekiarea" cols="20" rows="5" style="border: 2px solid #000000" wrap="hard" readonly></textarea>
+	      <input type="button" value="CR" onClick="clearrireki()" style="width:40px; height:40px; font-size:20px; border: 2px solid #000000">
+	  </tr><td>
+	</table>
+      </div>
+    </form>
+    
+    <div class="text2">
+      <ul>
+	<li>数字ボタン(0～9)を押すと数字が入力されます。(小数点表示もできます)</li>
+	<li>演算ボタン(+,-,*,/)を押すと演算が可能になります。</li>
+	<li>括弧ボタン「(,)」を押すと括弧内を優先して演算することが可能になります。</li>
+	<li>√ボタンを押すと平方根の計算が可能になります。</li>
+	<li>x^2ボタンを押すと入力された値xを二乗したx^2の計算が可能になります。</li>
+	<li>1/xボタンを押すと入力された値xを分母とした1/xの計算が可能になります。</li>
+	<li>％ボタンを押すと余りの計算が可能になります。</li>
+	<li>＝ボタンを押すと結果が表示されます。</li>
+	<li>BSボタンを押すと一文字消去ができます。</li>
+	<li>Cボタンを押すと入力内容が消去されます。</li>
+	<li style="color: green">電卓の下部の欄に計算履歴が表示されます。</li>
+	<li style="color: green">計算履歴欄にあるCRボタンを押すと計算履歴が消去されます。</li>
+	<li style="color: blue">入力欄に数式を直接打ち込み、「リターンキー」または「＝キー」を押すことで計算結果を表示することもできます。(√,x^2を除く)</li>
+      </ul>
+    </div>
+ 
+  </body> 
+</html>
